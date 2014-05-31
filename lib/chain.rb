@@ -70,7 +70,7 @@ module Chain
     begin
       JSON.dump(hash)
     rescue => e
-      raise(ArgumentError, "Must be able to encode to JSON.")
+      raise(ChainError, "JSON encoding error: #{e.message}")
     end
   end
 
@@ -78,7 +78,7 @@ module Chain
       begin
         JSON.parse(resp.body)
       rescue => e
-        raise ChainError
+        raise(ChainError, "JSON decoding error: #{e.message}")
       end
   end
 
@@ -89,6 +89,7 @@ module Chain
         return yield(@conn)
       rescue => e
         @conn = nil
+        raise(ChainError, "Connection error: #{e.message}")
       end
     end
   end

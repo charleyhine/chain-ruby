@@ -2,6 +2,24 @@
 
 Chain's official Ruby SDK.
 
+## Install
+
+```bash
+$ gem install chain-ruby
+```
+
+```ruby
+require 'chain'
+```
+
+## Quick Start
+
+```bash
+$ export CHAIN_URL=https://GUEST-TOKEN@api.chain.com
+$ ruby -r chain \
+	-e "p Chain.get_address('17x23dNjXJLzGMev6R63uyRhMWP1VHawKc')"
+```
+
 ## Documentation
 
 [RubyDoc](http://rubydoc.info/github/chain-engineering/chain-ruby/master/Chain)

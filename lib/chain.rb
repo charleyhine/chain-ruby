@@ -48,7 +48,7 @@ module Chain
       req = Net::HTTP::Put.new(API_URL.request_uri + path)
       prepare_req!(req)
       req.body = body
-      parse_resp(con.request(req))
+      parse_resp(c.request(req))
     end
   end
 
@@ -56,7 +56,7 @@ module Chain
     conn do |c|
       req = Net::HTTP::Get.new(API_URL.request_uri + path)
       prepare_req!(req)
-      parse_resp(con.request(req))
+      parse_resp(c.request(req))
     end
   end
 

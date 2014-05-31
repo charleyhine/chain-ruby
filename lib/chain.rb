@@ -12,7 +12,7 @@ module Chain
   # E.g. https://API-TOKEN@api.chain.com
   API_URL = URI.parse(ENV['CHAIN_URL'] || raise("Must set CHAIN_URL."))
   # A collection of root certificates used by api.chain.com
-  CHAIN_PEM = File.expand_path('../chain.pem', __FILE__)
+  CHAIN_PEM = File.expand_path('../../chain.pem', __FILE__)
   # Prefixed in the path of HTTP requests.
   API_VERSION = 'v1'
 

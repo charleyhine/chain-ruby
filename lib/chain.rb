@@ -27,7 +27,7 @@ module Chain
     get("/#{API_VERSION}/bitcoin/addresses/#{addr}")
   end
 
-  # Provide a bitcion address.
+  # Provide a bitcoin address.
   # Returns an array of hashes.
   # Response details defined here: https://chain.com/#docs-unspents
   def self.get_unspent_outputs(addr)

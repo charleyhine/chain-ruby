@@ -24,7 +24,7 @@ $ ruby -r chain \
 
 [RubyDoc](http://rubydoc.info/github/chain-engineering/chain-ruby/master/Chain)
 
-## The MIT License (MIT)
+## License
 
 ```
 Copyright (c) <2014> <Chain Inc.>

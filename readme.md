@@ -14,10 +14,16 @@ require 'chain'
 
 ## Quick Start
 
-```bash
-$ export CHAIN_URL=https://GUEST-TOKEN@api.chain.com
-$ ruby -r chain \
-	-e "p Chain.get_address('17x23dNjXJLzGMev6R63uyRhMWP1VHawKc')"
+```ruby
+require 'chain'
+Chain.get_address('17x23dNjXJLzGMev6R63uyRhMWP1VHawKc')
+```
+
+## API Key
+By default, chain-ruby uses Chain's demo API key. You can get an API key by signing up at https://chain.com. You can use your API key by setting it on the Chain module.
+
+```ruby
+Chain.api_key = 'YOUR-KEY'
 ```
 
 ## Documentation

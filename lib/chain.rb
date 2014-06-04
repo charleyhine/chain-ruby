@@ -7,10 +7,9 @@ require 'thread'
 module Chain
   @conn_mutex = Mutex.new
 
-  # Read's the URL from the environment.
-  # Include API token in user portion of UIR.
-  # E.g. https://API-TOKEN@api.chain.com
-  API_URL = URI.parse(ENV['CHAIN_URL'] || raise("Must set CHAIN_URL."))
+  GUEST_KEY = 'GUEST-TOKEN'
+  API_URL = 'https://api.chain.com'
+
   # A collection of root certificates used by api.chain.com
   CHAIN_PEM = File.expand_path('../../chain.pem', __FILE__)
   # Prefixed in the path of HTTP requests.
@@ -41,6 +40,13 @@ module Chain
     r["transaction_hash"]
   end
 
+  # Set the key with the value found in your settings page on https://chain.com
+  # If no key is set, Chain's guest token will be used. The guest token
+  # should not be used for production services.
+  def self.api_key=(key)
+    @api_key = key
+  end
+
   private
 
   def self.put(path, body)
@@ -61,7 +67,7 @@ module Chain
   end
 
   def self.prepare_req!(req)
-    req.basic_auth(API_URL.user, '')
+    req.basic_auth(api_key, '')
     req['Content-Type'] = 'applicaiton/json'
     req['User-Agent'] = 'chain-ruby/0'
   end
@@ -99,6 +105,16 @@ module Chain
       c.use_ssl = true
       c.verify_mode = OpenSSL::SSL::VERIFY_PEER
       c.ca_file = CHAIN_PEM
+    end
+  end
+
+  def self.api_key
+    @api_key || key_from_env || GUEST_KEY
+  end
+
+  def self.key_from_env
+    if url = ENV['CHAIN_URL']
+      URI.parse(url).user
     end
   end
 

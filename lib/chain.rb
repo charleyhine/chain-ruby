@@ -8,7 +8,7 @@ module Chain
   @conn_mutex = Mutex.new
 
   GUEST_KEY = 'GUEST-TOKEN'
-  API_URL = 'https://api.chain.com'
+  API_URL = URI('https://api.chain.com')
 
   # A collection of root certificates used by api.chain.com
   CHAIN_PEM = File.expand_path('../../chain.pem', __FILE__)

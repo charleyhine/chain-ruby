@@ -36,7 +36,7 @@ module Chain
   # Provide a hex encoded, signed transaction.
   # Returns a string representing the newly created transaction hash.
   def self.send_transactions(hex)
-    r = put("/#{API_VERSION}/bitcoin/transactions", encode_body!({hex: hex}))
+    r = put("/#{API_VERSION}/bitcoin/transactions", {hex: hex})
     r["transaction_hash"]
   end
 
@@ -50,26 +50,22 @@ module Chain
   private
 
   def self.put(path, body)
-    conn do |c|
-      req = Net::HTTP::Put.new(API_URL.request_uri + path)
-      prepare_req!(req)
-      req.body = body
-      parse_resp(c.request(req))
-    end
+    make_req!(Net::HTTP::Put, path, encode_body!(body))
   end
 
   def self.get(path)
-    conn do |c|
-      req = Net::HTTP::Get.new(API_URL.request_uri + path)
-      prepare_req!(req)
-      parse_resp(c.request(req))
-    end
+    make_req!(Net::HTTP::Get, path)
   end
 
-  def self.prepare_req!(req)
-    req.basic_auth(api_key, '')
-    req['Content-Type'] = 'applicaiton/json'
-    req['User-Agent'] = 'chain-ruby/0'
+  def self.make_req!(type, path, body=nil)
+    conn do |c|
+      req = type.new(API_URL.request_uri + path)
+      req.basic_auth(api_key, '')
+      req['Content-Type'] = 'applicaiton/json'
+      req['User-Agent'] = 'chain-ruby/0'
+      req.body = body
+      parse_resp(c.request(req))
+    end
   end
 
   def self.encode_body!(hash)

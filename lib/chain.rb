@@ -59,7 +59,7 @@ module Chain
     conn do |c|
       req = type.new(API_URL.request_uri + path)
       req.basic_auth(api_key, '')
-      req['Content-Type'] = 'applicaiton/json'
+      req['Content-Type'] = 'application/json'
       req['User-Agent'] = 'chain-ruby/0'
       req.body = body
       parse_resp(c.request(req))

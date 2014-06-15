@@ -33,7 +33,7 @@ module Chain
 
   # Provide a hex encoded, signed transaction.
   # Returns a string representing the newly created transaction hash.
-  def self.send_transactions(hex)
+  def self.send_transaction(hex)
     r = put("/#{API_VERSION}/bitcoin/transactions", {hex: hex})
     r["transaction_hash"]
   end

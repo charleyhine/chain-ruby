@@ -28,4 +28,4 @@ Chain.api_key = 'YOUR-KEY'
 
 ## Documentation
 
-[RubyDoc](http://rubydoc.info/github/chain-engineering/chain-ruby/master/Chain)
+The Chain API Documentation is available at [https://chain.com/docs/ruby](https://chain.com/docs/ruby)

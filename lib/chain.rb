@@ -26,9 +26,15 @@ module Chain
   end
 
   # Provide a bitcoin address.
-  # Returns an array of hashes.
+  # Returns an array of transaction outputs.
   def self.get_address_unspents(addr)
     get("/#{API_VERSION}/bitcoin/addresses/#{addr}/unspents")
+  end
+  
+  # Provide a bitcoin address.
+  # Returns an array of transactions.
+  def self.get_address_transactions(addr)
+    get("/#{API_VERSION}/bitcoin/addresses/#{addr}/transactions")
   end
   
   # Provide a bitcoin transaction.

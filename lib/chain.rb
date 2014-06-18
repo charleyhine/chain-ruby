@@ -20,31 +20,31 @@ module Chain
   ChainError = Class.new(StandardError)
 
   # Provide a bitcoin address.
-  # Returns a hash.
+  # Returns a hash of bitcoin public key properties.
   def self.get_address(addr)
     get("/#{API_VERSION}/bitcoin/addresses/#{addr}")
   end
 
   # Provide a bitcoin address.
-  # Returns an array of transaction outputs.
+  # Returns an array of hashes (bitcoin transaction outputs).
   def self.get_address_unspents(addr)
     get("/#{API_VERSION}/bitcoin/addresses/#{addr}/unspents")
   end
   
   # Provide a bitcoin address.
-  # Returns an array of transactions.
+  # Returns an array of hashes (bitcoin transactions).
   def self.get_address_transactions(addr)
     get("/#{API_VERSION}/bitcoin/addresses/#{addr}/transactions")
   end
   
   # Provide a bitcoin transaction.
-  # Returns a hash.
+  # Returns a hash of bitcoin transaction properties.
   def self.get_transaction(hash)
     get("/#{API_VERSION}/bitcoin/transactions/#{hash}")
   end
 
   # Provide a hex encoded, signed transaction.
-  # Returns a string representing the newly created transaction hash.
+  # Returns a string representing the newly created bitcoin transaction hash.
   def self.send_transaction(hex)
     r = put("/#{API_VERSION}/bitcoin/transactions", {hex: hex})
     r["transaction_hash"]

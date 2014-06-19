@@ -2,6 +2,7 @@ require 'net/http'
 require 'net/https'
 require 'json'
 require 'thread'
+require 'uri'
 
 # A module that wraps the Chain HTTP API.
 module Chain
@@ -33,8 +34,8 @@ module Chain
   
   # Provide a bitcoin address.
   # Returns transactions for a Bitcoin address (array of hashes).
-  def self.get_address_transactions(addr)
-    get("/#{API_VERSION}/bitcoin/addresses/#{addr}/transactions")
+  def self.get_address_transactions(addr, options={})
+    get("/#{API_VERSION}/bitcoin/addresses/#{addr}/transactions", options)
   end
   
   # Provide a bitcoin transaction.
@@ -63,7 +64,8 @@ module Chain
     make_req!(Net::HTTP::Put, path, encode_body!(body))
   end
 
-  def self.get(path)
+  def self.get(path, params={})    
+    path = path + "?" + URI.encode_www_form(params) unless params.empty?
     make_req!(Net::HTTP::Get, path)
   end
 

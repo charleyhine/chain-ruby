@@ -12,6 +12,11 @@ $ gem install chain-ruby
 require 'chain'
 ```
 
+## Gemfile
+```
+gem 'chain-ruby', '~> 0.0.7'
+```
+
 ## Quick Start
 
 ```ruby

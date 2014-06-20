@@ -58,9 +58,9 @@ module Chain
   end
   
   # Get last Bitcoin block.
-  # Returns basic details for last Bitcoin block (hash).
-  def self.get_block_last
-    get("/#{API_VERSION}/bitcoin/blocks/last")
+  # Returns basic details for latest Bitcoin block (hash).
+  def self.get_latest_block
+    get("/#{API_VERSION}/bitcoin/blocks/latest")
   end
   
   # Set the key with the value found in your settings page on https://chain.com

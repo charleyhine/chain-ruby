@@ -50,6 +50,12 @@ module Chain
     r = put("/#{API_VERSION}/bitcoin/transactions", {hex: hex})
     r["transaction_hash"]
   end
+  
+  # Provide a bitcoin block.
+  # Returns basic details for a Bitcoin block (hash).
+  def self.get_block(hash)
+    get("/#{API_VERSION}/bitcoin/blocks/#{hash}")
+  end
 
   # Set the key with the value found in your settings page on https://chain.com
   # If no key is set, Chain's guest token will be used. The guest token

@@ -20,25 +20,25 @@ module Chain
   # the HTTP request or the parsing of the response body.
   ChainError = Class.new(StandardError)
 
-  # Provide a bitcoin address.
+  # Provide a Bitcoin address.
   # Returns basic details for a Bitcoin address (hash).
   def self.get_address(addr)
     get("/#{API_VERSION}/bitcoin/addresses/#{addr}")
   end
 
-  # Provide a bitcoin address.
+  # Provide a Bitcoin address.
   # Returns unspent transaction outputs for a Bitcoin address (array of hashes).
   def self.get_address_unspents(addr)
     get("/#{API_VERSION}/bitcoin/addresses/#{addr}/unspents")
   end
   
-  # Provide a bitcoin address.
+  # Provide a Bitcoin address.
   # Returns transactions for a Bitcoin address (array of hashes).
   def self.get_address_transactions(addr, options={})
     get("/#{API_VERSION}/bitcoin/addresses/#{addr}/transactions", options)
   end
   
-  # Provide a bitcoin transaction.
+  # Provide a Bitcoin transaction.
   # Returns basic details for a Bitcoin transaction (hash).
   def self.get_transaction(hash)
     get("/#{API_VERSION}/bitcoin/transactions/#{hash}")
@@ -51,12 +51,18 @@ module Chain
     r["transaction_hash"]
   end
   
-  # Provide a bitcoin block.
+  # Provide a Bitcoin block.
   # Returns basic details for a Bitcoin block (hash).
   def self.get_block(hash)
     get("/#{API_VERSION}/bitcoin/blocks/#{hash}")
   end
-
+  
+  # Get last Bitcoin block.
+  # Returns basic details for last Bitcoin block (hash).
+  def self.get_block_last
+    get("/#{API_VERSION}/bitcoin/blocks/last")
+  end
+  
   # Set the key with the value found in your settings page on https://chain.com
   # If no key is set, Chain's guest token will be used. The guest token
   # should not be used for production services.

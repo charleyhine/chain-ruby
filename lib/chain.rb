@@ -22,20 +22,20 @@ module Chain
 
   # Provide a Bitcoin address.
   # Returns basic details for a Bitcoin address (hash).
-  def self.get_address(addr)
-    get("/#{API_VERSION}/bitcoin/addresses/#{addr}")
+  def self.get_address(address)
+    get("/#{API_VERSION}/bitcoin/addresses/#{address}")
   end
 
   # Provide a Bitcoin address.
   # Returns unspent transaction outputs for a Bitcoin address (array of hashes).
-  def self.get_address_unspents(addr)
-    get("/#{API_VERSION}/bitcoin/addresses/#{addr}/unspents")
+  def self.get_address_unspents(address)
+    get("/#{API_VERSION}/bitcoin/addresses/#{address}/unspents")
   end
   
   # Provide a Bitcoin address.
   # Returns transactions for a Bitcoin address (array of hashes).
-  def self.get_address_transactions(addr, options={})
-    get("/#{API_VERSION}/bitcoin/addresses/#{addr}/transactions", options)
+  def self.get_address_transactions(address, options={})
+    get("/#{API_VERSION}/bitcoin/addresses/#{address}/transactions", options)
   end
   
   # Provide a Bitcoin transaction.

@@ -51,13 +51,13 @@ module Chain
     r["transaction_hash"]
   end
   
-  # Provide a Bitcoin block.
+  # Provide a Bitcoin block hash or height.
   # Returns basic details for a Bitcoin block (hash).
-  def self.get_block(hash)
-    get("/#{API_VERSION}/bitcoin/blocks/#{hash}")
+  def self.get_block(hash_or_height)
+    get("/#{API_VERSION}/bitcoin/blocks/#{hash_or_height}")
   end
   
-  # Get last Bitcoin block.
+  # Get latest Bitcoin block.
   # Returns basic details for latest Bitcoin block (hash).
   def self.get_latest_block
     get("/#{API_VERSION}/bitcoin/blocks/latest")

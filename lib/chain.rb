@@ -20,25 +20,25 @@ module Chain
   # the HTTP request or the parsing of the response body.
   ChainError = Class.new(StandardError)
 
-  # Provide a bitcoin address.
+  # Provide a Bitcoin address.
   # Returns basic details for a Bitcoin address (hash).
-  def self.get_address(addr)
-    get("/#{API_VERSION}/bitcoin/addresses/#{addr}")
+  def self.get_address(address)
+    get("/#{API_VERSION}/bitcoin/addresses/#{address}")
   end
 
-  # Provide a bitcoin address.
+  # Provide a Bitcoin address.
   # Returns unspent transaction outputs for a Bitcoin address (array of hashes).
-  def self.get_address_unspents(addr)
-    get("/#{API_VERSION}/bitcoin/addresses/#{addr}/unspents")
+  def self.get_address_unspents(address)
+    get("/#{API_VERSION}/bitcoin/addresses/#{address}/unspents")
   end
   
-  # Provide a bitcoin address.
+  # Provide a Bitcoin address.
   # Returns transactions for a Bitcoin address (array of hashes).
-  def self.get_address_transactions(addr, options={})
-    get("/#{API_VERSION}/bitcoin/addresses/#{addr}/transactions", options)
+  def self.get_address_transactions(address, options={})
+    get("/#{API_VERSION}/bitcoin/addresses/#{address}/transactions", options)
   end
   
-  # Provide a bitcoin transaction.
+  # Provide a Bitcoin transaction.
   # Returns basic details for a Bitcoin transaction (hash).
   def self.get_transaction(hash)
     get("/#{API_VERSION}/bitcoin/transactions/#{hash}")
@@ -50,7 +50,19 @@ module Chain
     r = put("/#{API_VERSION}/bitcoin/transactions", {hex: hex})
     r["transaction_hash"]
   end
-
+  
+  # Provide a Bitcoin block hash or height.
+  # Returns basic details for a Bitcoin block (hash).
+  def self.get_block(hash_or_height)
+    get("/#{API_VERSION}/bitcoin/blocks/#{hash_or_height}")
+  end
+  
+  # Get latest Bitcoin block.
+  # Returns basic details for latest Bitcoin block (hash).
+  def self.get_latest_block
+    get("/#{API_VERSION}/bitcoin/blocks/latest")
+  end
+  
   # Set the key with the value found in your settings page on https://chain.com
   # If no key is set, Chain's guest token will be used. The guest token
   # should not be used for production services.

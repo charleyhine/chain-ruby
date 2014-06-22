@@ -51,7 +51,7 @@ module Chain
     r["transaction_hash"]
   end
   
-  # Provide a Bitcoin block hash or height.
+  # Provide a Bitcoin block hash (string) or height (integer).
   # Returns basic details for a Bitcoin block (hash).
   def self.get_block(hash_or_height)
     get("/#{API_VERSION}/bitcoin/blocks/#{hash_or_height}")

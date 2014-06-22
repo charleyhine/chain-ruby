@@ -6,7 +6,7 @@ describe Chain do
       @address = '12mXqGPQyPsABMqCAGzy5LMSfpitzMqVdM'
       @transaction = '60a618bdcb85d218d2b9caeaa43e4b3519945949d3b2b7ee6085bb2ebb62f9ce'
       @block_hash = '00000000000000000f4bb6c214d0d797adf8c66a8d006170915332968d1de0e8'
-      @block_height = '307263'
+      @block_height = 307263
   end
   
   it { should respond_to(:send_transaction) }
@@ -48,7 +48,7 @@ describe Chain do
         expect(Chain.get_block(@block_hash)['hash']).to eq(@block_hash)
       end
       
-      it "takes a block height and returns a Ruby hash" do
+      it "takes a block height (integer) and returns a Ruby hash" do
         expect(Chain.get_block(@block_height)).to be_an_instance_of Hash
       end
   end

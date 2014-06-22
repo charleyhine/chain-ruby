@@ -58,5 +58,4 @@ describe Chain do
         expect(Chain.get_latest_block).to be_an_instance_of Hash
       end
   end
-
 end

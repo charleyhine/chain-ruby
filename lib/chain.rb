@@ -40,6 +40,24 @@ module Chain
     get("/#{API_VERSION}/bitcoin/addresses/#{address}/transactions", options)
   end
   
+  # Provide a Bitcoin address.
+  # Returns transaction hashes for a Bitcoin address and retreives each transaction separately (array of hashes).
+  # TODO - manage these threads outside a single connection 
+  def self.get_address_transactions_slim(address, options={})
+    tx_hashes = get("/#{API_VERSION}/bitcoin/addresses/#{address}/transactions/slim", options)
+    
+    transactions = []
+    
+    threads = tx_hashes.map do |i|
+      Thread.new(i) do |i|
+        transactions << get("/#{API_VERSION}/bitcoin/transactions/#{i}")
+      end
+    end
+    threads.each {|t| t.join}
+    
+    transactions
+  end
+  
   # Provide a Bitcoin transaction.
   # Returns basic details for a Bitcoin transaction (hash).
   def self.get_transaction(hash)
@@ -63,26 +81,6 @@ module Chain
   # Returns basic details for latest Bitcoin block (hash).
   def self.get_latest_block
     get("/#{API_VERSION}/bitcoin/blocks/latest")
-  end
-  
-  # Testing 
-  def self.get_latest_block
-    get("/#{API_VERSION}/bitcoin/blocks/latest")
-  end
-  
-  def self.get_address_transactions_slim(address, options={})
-    tx_hashes = get("/#{API_VERSION}/bitcoin/addresses/#{address}/transactions/slim", options)
-    
-    transactions = []
-    
-    threads = tx_hashes.map do |i|
-      Thread.new(i) do |i|
-        transactions << get("/#{API_VERSION}/bitcoin/transactions/#{i}")
-      end
-    end
-    threads.each {|t| t.join}
-    
-    transactions
   end
   
   # Set the key with the value found in your settings page on https://chain.com

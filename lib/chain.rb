@@ -3,6 +3,8 @@ require 'net/https'
 require 'json'
 require 'thread'
 require 'uri'
+require 'thread'
+require 'thwait'
 
 # A module that wraps the Chain HTTP API.
 module Chain
@@ -63,6 +65,30 @@ module Chain
     get("/#{API_VERSION}/bitcoin/blocks/latest")
   end
   
+  # Testing 
+  def self.get_latest_block
+    get("/#{API_VERSION}/bitcoin/blocks/latest")
+  end
+  
+  def self.get_address_transactions_slim(address, options={})
+    start = Time.now
+    
+    tx_hashes = get("/#{API_VERSION}/bitcoin/addresses/#{address}/transactions/slim", options)
+    
+    transactions = []
+    
+    threads = tx_hashes.map do |i|
+      Thread.new(i) do |i|
+        transactions << get("/#{API_VERSION}/bitcoin/transactions/#{i}")
+      end
+    end
+    threads.each {|t| t.join}
+
+    diff = Time.now - start
+    
+    transactions
+  end
+  
   # Set the key with the value found in your settings page on https://chain.com
   # If no key is set, Chain's guest token will be used. The guest token
   # should not be used for production services.
@@ -83,7 +109,7 @@ module Chain
 
   def self.make_req!(type, path, body=nil)
     conn do |c|
-      req = type.new(API_URL.request_uri + path)
+      req = type.new(path)
       req.basic_auth(api_key, '')
       req['Content-Type'] = 'application/json'
       req['User-Agent'] = 'chain-ruby/0'
@@ -101,11 +127,11 @@ module Chain
   end
 
   def self.parse_resp(resp)
-      begin
-        JSON.parse(resp.body)
-      rescue => e
-        raise(ChainError, "JSON decoding error: #{e.message}")
-      end
+    begin
+      JSON.parse(resp.body)
+    rescue => e
+      raise(ChainError, "JSON decoding error: #{e.message}")
+    end
   end
 
   def self.conn

@@ -71,8 +71,6 @@ module Chain
   end
   
   def self.get_address_transactions_slim(address, options={})
-    start = Time.now
-    
     tx_hashes = get("/#{API_VERSION}/bitcoin/addresses/#{address}/transactions/slim", options)
     
     transactions = []
@@ -83,8 +81,6 @@ module Chain
       end
     end
     threads.each {|t| t.join}
-
-    diff = Time.now - start
     
     transactions
   end

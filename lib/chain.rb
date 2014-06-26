@@ -4,7 +4,6 @@ require 'json'
 require 'thread'
 require 'uri'
 require 'thread'
-require 'thwait'
 
 # A module that wraps the Chain HTTP API.
 module Chain

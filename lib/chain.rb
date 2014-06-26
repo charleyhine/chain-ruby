@@ -47,9 +47,9 @@ module Chain
     
     transactions = []
     
-    tx_hashes.map do |i|
-      Thread.new(i) do |i|
-        transactions << get("/#{API_VERSION}/bitcoin/transactions/#{i}")
+    tx_hashes.each_with_index do |hash, i|
+      Thread.new do
+        transactions[i] = get("/#{API_VERSION}/bitcoin/transactions/#{hash}")
       end
     end.map(&:join)
     

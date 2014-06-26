@@ -45,15 +45,13 @@ module Chain
   def self.get_address_transactions_slim(address, options={})
     tx_hashes = get("/#{API_VERSION}/bitcoin/addresses/#{address}/transactions/slim", options)
     
-    transactions = []
-    
-    tx_hashes.each_with_index do |hash, i|
-      Thread.new do
-        transactions[i] = get("/#{API_VERSION}/bitcoin/transactions/#{hash}")
-      end
-    end.map(&:join)
-    
-    transactions
+    Array.new.tap do |transactions|
+      tx_hashes.each_with_index do |hash, i|
+        Thread.new do
+          transactions[i] = get("/#{API_VERSION}/bitcoin/transactions/#{hash}")
+        end
+      end.map(&:join)
+    end
   end
   
   # Provide a Bitcoin transaction.

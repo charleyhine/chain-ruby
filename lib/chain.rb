@@ -60,16 +60,16 @@ module Chain
     transaction.hex
   end
   
-  # Generate a simple OP_RETURN Bitcoin transaction.
+  # Generate a simple OP_RETURN script Bitcoin transaction.
   # Provide private key in wallet import format (starts with a 5).
-  # Provide unspendable output message (string) - max 40 bytes.
+  # Provide unspendable output metadata (string) - max 40 bytes.
   # Returns signed raw transaction hex (to be sent via send_transaction).
-  def self.build_message_transaction(from_address, private_key, to_address, message)
+  def self.build_metadata_transaction(from_address, private_key, to_address, metadata)
     transaction = TransactionBuilder.new
     transaction.from_address = from_address
     transaction.private_key = private_key
     transaction.to_address = to_address
-    transaction.op_return = message   # OP_RETURN content
+    transaction.op_return = metadata   # OP_RETURN metadata
     
     transaction.sufficient_funds?
     transaction.build_and_sign

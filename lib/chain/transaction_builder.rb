@@ -32,10 +32,16 @@ class TransactionBuilder
   
   def amount= val
    @amount = BigDecimal.new(val.to_s) 
-   set_transaction_fee
+   calc_transaction_fee
   end
   
-  def set_transaction_fee
+  def op_return= val
+   @op_return = val
+   @amount = BigDecimal.new("0.000") 
+   calc_transaction_fee
+  end
+  
+  def calc_transaction_fee
      @transaction_fee = @amount >=  BigDecimal.new("0.01") ?  BigDecimal.new("0") :  BigDecimal.new("0.0001")
   end
   

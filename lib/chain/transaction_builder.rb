@@ -101,7 +101,7 @@ class TransactionBuilder
   
   def build_outputs
     unless @op_return.nil?
-      message = @op_return
+      message = @op_return.byteslice(0, 40) 
       message_hex = "%02X" % (message.each_byte.size)
       message_hex += message.each_byte.map { |b| "%02X" % b }.join
     end

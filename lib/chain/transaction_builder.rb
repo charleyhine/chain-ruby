@@ -6,7 +6,7 @@ SATOSHI_PER_BITCOIN = BigDecimal.new("100000000")
 
 class TransactionBuilder
   
-  attr_accessor :from_address, :private_key, :to_address, :amount, :op_return, :keypair, :readable, :hex
+  attr_accessor :from_address, :private_key, :to_address, :amount, :transaction_fee, :op_return, :keypair, :readable, :hex
   
   def initialize
     @unspent_outputs = []
@@ -31,18 +31,18 @@ class TransactionBuilder
   end
   
   def amount= val
-   @amount = BigDecimal.new(val.to_s) 
-   calc_transaction_fee
+   @amount = BigDecimal.new(val)
+   set_transaction_fee
   end
   
   def op_return= val
-   @op_return = val
-   @amount = BigDecimal.new("0.000") 
-   calc_transaction_fee
+   @op_return = val.byteslice(0, 40) 
+   @amount = BigDecimal.new("0.00")
+   set_transaction_fee
   end
   
-  def calc_transaction_fee
-     @transaction_fee = @amount >=  BigDecimal.new("0.01") ?  BigDecimal.new("0") :  BigDecimal.new("0.0001")
+  def set_transaction_fee
+    @transaction_fee = @amount >=  BigDecimal.new("0.01") ?  BigDecimal.new("0") :  BigDecimal.new("0.0001")
   end
   
   def build_and_sign
@@ -107,7 +107,7 @@ class TransactionBuilder
   
   def build_outputs
     unless @op_return.nil?
-      message = @op_return.byteslice(0, 40) 
+      message = @op_return
       message_hex = "%02X" % (message.each_byte.size)
       message_hex += message.each_byte.map { |b| "%02X" % b }.join
     end

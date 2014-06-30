@@ -46,6 +46,7 @@ module Chain
   
   # Generate a simple raw Bitcoin transaction.
   # Provide private key in wallet import format (starts with a 5).
+  # Provide amount in BTC (string) i.e. "0.234" -OR- OP_RETURN content (string).
   # Returns signed raw transaction hex (to be sent via send_transaction).
   def self.build_transaction(from_address, private_key, to_address, amount=nil, op_return=nil)
     transaction = TransactionBuilder.new

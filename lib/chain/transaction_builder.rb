@@ -79,8 +79,12 @@ class TransactionBuilder
   def sufficient_funds?
     response = Chain.get_address(@from_address)
     balance = BigDecimal.new(response["balance"]) / SATOSHI_PER_BITCOIN
-
-    raise "Insufficient funds" if balance < @amount + @transaction_fee
+    
+    if balance < @amount + @transaction_fee
+      raise "Insufficient funds" if balance < @amount + @transaction_fee
+    else
+      return true
+    end
   end
   
   def build_inputs

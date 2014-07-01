@@ -55,9 +55,10 @@ module Chain
     transaction.to_address = to_address
     transaction.amount = amount   # BTC amount to transfer
     
-    transaction.sufficient_funds?
-    transaction.build_and_sign
-    transaction.hex
+    if transaction.sufficient_funds?
+      transaction.build_and_sign
+      transaction.hex
+    end
   end
   
   # Generate a simple OP_RETURN script Bitcoin transaction.
@@ -71,9 +72,10 @@ module Chain
     transaction.to_address = to_address
     transaction.op_return = metadata   # OP_RETURN metadata
     
-    transaction.sufficient_funds?
-    transaction.build_and_sign
-    transaction.hex
+    if transaction.sufficient_funds?
+      transaction.build_and_sign
+      transaction.hex
+    end
   end
 
   # Provide a hex encoded, signed transaction.

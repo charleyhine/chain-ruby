@@ -10,7 +10,7 @@ module Chain
   @conn_mutex = Mutex.new
 
   GUEST_KEY = 'GUEST-TOKEN'
-  API_URL = URI('https://api.chain.com')
+  API_URL = URI('http://localhost:3000')
 
   # A collection of root certificates used by api.chain.com
   CHAIN_PEM = File.expand_path('../../chain.pem', __FILE__)
@@ -47,9 +47,9 @@ module Chain
     
     transactions = []
     
-    threads = tx_hashes.map do |i|
-      Thread.new(i) do |i|
-        transactions << get("/#{API_VERSION}/bitcoin/transactions/#{i}")
+    threads = tx_hashes.each_with_index.map do |hash, index|
+      Thread.new(hash) do |hash|
+        transactions[index] = get("/#{API_VERSION}/bitcoin/transactions/#{hash}")
       end
     end
     threads.each {|t| t.join}
@@ -141,9 +141,11 @@ module Chain
 
   def self.establish_conn
     Net::HTTP.new(API_URL.host, API_URL.port).tap do |c|
+=begin
       c.use_ssl = true
       c.verify_mode = OpenSSL::SSL::VERIFY_PEER
       c.ca_file = CHAIN_PEM
+=end
     end
   end
 

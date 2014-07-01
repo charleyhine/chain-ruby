@@ -10,6 +10,7 @@ describe Chain do
   end
   
   it { should respond_to(:build_transaction) }
+  it { should respond_to(:build_metadata_transaction) }
   it { should respond_to(:send_transaction) }
   
   describe "#get_address" do

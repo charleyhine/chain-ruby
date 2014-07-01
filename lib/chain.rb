@@ -3,6 +3,7 @@ require 'net/https'
 require 'json'
 require 'thread'
 require 'uri'
+require 'chain/transaction_builder'
 
 # A module that wraps the Chain HTTP API.
 module Chain
@@ -173,5 +174,3 @@ module Chain
   end
 
 end
-
-require 'chain/transaction_builder'

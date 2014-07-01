@@ -43,6 +43,12 @@ module Chain
   def self.get_transaction(hash)
     get("/#{API_VERSION}/bitcoin/transactions/#{hash}")
   end
+  
+  # Provide a Bitcoin transaction.
+  # Returns the OP_RETURN string (if it exists) for a Bitcoin transaction (hash).
+  def self.get_transaction_op_return(hash)
+    get("/#{API_VERSION}/bitcoin/transactions/#{hash}/op-return")
+  end
 
   # Provide a hex encoded, signed transaction.
   # Returns the newly created Bitcoin transaction hash (string).

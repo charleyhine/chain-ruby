@@ -71,7 +71,7 @@ module Chain
     transaction.from_address = from_address
     transaction.private_key = private_key
     transaction.to_address = to_address
-    transaction.op_return = metadata   # OP_RETURN metadata
+    transaction.op_return = metadata
     
     if transaction.sufficient_funds?
       transaction.build_and_sign

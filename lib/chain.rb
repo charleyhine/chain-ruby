@@ -13,8 +13,10 @@ module Chain
 
   # A collection of root certificates used by api.chain.com
   CHAIN_PEM = File.expand_path('../../chain.pem', __FILE__)
+
   # Prefixed in the path of HTTP requests.
   API_VERSION = 'v1'
+  API_NETWORK = 'bitcoin'
 
   # Raised when an unexpected error occurs in either
   # the HTTP request or the parsing of the response body.
@@ -23,52 +25,53 @@ module Chain
   # Provide a Bitcoin address.
   # Returns basic details for a Bitcoin address (hash).
   def self.get_address(address)
-    get("/#{API_VERSION}/bitcoin/addresses/#{address}")
+    get("/#{API_VERSION}/#{api_network}/addresses/#{address}")
   end
 
   # Provide a Bitcoin address.
   # Returns unspent transaction outputs for a Bitcoin address (array of hashes).
   def self.get_address_unspents(address)
-    get("/#{API_VERSION}/bitcoin/addresses/#{address}/unspents")
+    get("/#{API_VERSION}/#{api_network}/addresses/#{address}/unspents")
   end
-  
+
   # Provide a Bitcoin address.
   # Returns transactions for a Bitcoin address (array of hashes).
   def self.get_address_transactions(address, options={})
-    get("/#{API_VERSION}/bitcoin/addresses/#{address}/transactions", options)
+    get("/#{API_VERSION}/#{api_network}/addresses/#{address}/transactions",
+      options)
   end
-  
+
   # Provide a Bitcoin transaction.
   # Returns basic details for a Bitcoin transaction (hash).
   def self.get_transaction(hash)
-    get("/#{API_VERSION}/bitcoin/transactions/#{hash}")
+    get("/#{API_VERSION}/#{api_network}/transactions/#{hash}")
   end
-  
+
   # Provide a Bitcoin transaction.
-  # Returns the OP_RETURN string (if it exists) for a Bitcoin transaction (hash).
+  # Returns the OP_RETURN string (if it exists) for a Bitcoin transaction(hash).
   def self.get_transaction_op_return(hash)
-    get("/#{API_VERSION}/bitcoin/transactions/#{hash}/op-return")
+    get("/#{API_VERSION}/#{api_network}/transactions/#{hash}/op-return")
   end
 
   # Provide a hex encoded, signed transaction.
   # Returns the newly created Bitcoin transaction hash (string).
   def self.send_transaction(hex)
-    r = put("/#{API_VERSION}/bitcoin/transactions", {hex: hex})
+    r = put("/#{API_VERSION}/#{api_network}/transactions", {hex: hex})
     r["transaction_hash"]
   end
-  
+
   # Provide a Bitcoin block hash or height.
   # Returns basic details for a Bitcoin block (hash).
   def self.get_block(hash_or_height)
-    get("/#{API_VERSION}/bitcoin/blocks/#{hash_or_height}")
+    get("/#{API_VERSION}/#{api_network}/blocks/#{hash_or_height}")
   end
-  
+
   # Get latest Bitcoin block.
   # Returns basic details for latest Bitcoin block (hash).
   def self.get_latest_block
-    get("/#{API_VERSION}/bitcoin/blocks/latest")
+    get("/#{API_VERSION}/#{api_network}/blocks/latest")
   end
-  
+
   # Set the key with the value found in your settings page on https://chain.com
   # If no key is set, Chain's guest token will be used. The guest token
   # should not be used for production services.
@@ -82,7 +85,7 @@ module Chain
     make_req!(Net::HTTP::Put, path, encode_body!(body))
   end
 
-  def self.get(path, params={})    
+  def self.get(path, params={})
     path = path + "?" + URI.encode_www_form(params) unless params.empty?
     make_req!(Net::HTTP::Get, path)
   end
@@ -143,5 +146,14 @@ module Chain
       URI.parse(url).user
     end
   end
+
+  def self.api_network=(net)
+    @api_network = net
+  end
+
+  def self.api_network
+    @api_network || API_NETWORK
+  end
+
 
 end

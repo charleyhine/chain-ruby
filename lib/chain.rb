@@ -3,6 +3,7 @@ require 'net/https'
 require 'json'
 require 'thread'
 require 'uri'
+require 'chain/transaction_builder'
 
 # A module that wraps the Chain HTTP API.
 module Chain
@@ -52,6 +53,40 @@ module Chain
   def self.get_transaction_op_return(hash)
     get("/#{API_VERSION}/#{block_chain}/transactions/#{hash}/op-return")
   end
+  
+  # Generate a simple standard Bitcoin transaction.
+  # Provide private key in wallet import format (starts with a 5).
+  # Provide amount in BTC (string) i.e. "0.234".
+  # Returns signed raw transaction hex (to be sent via send_transaction).
+  def self.build_transaction(from_address, private_key, to_address, amount)
+    transaction = TransactionBuilder.new
+    transaction.from_address = from_address
+    transaction.private_key = private_key
+    transaction.to_address = to_address
+    transaction.amount = amount   # BTC amount to transfer
+    
+    if transaction.sufficient_funds?
+      transaction.build_and_sign
+      transaction.hex
+    end
+  end
+  
+  # Generate a simple OP_RETURN script Bitcoin transaction.
+  # Provide private key in wallet import format (starts with a 5).
+  # Provide unspendable output metadata (string) - max 40 bytes.
+  # Returns signed raw transaction hex (to be sent via send_transaction).
+  def self.build_metadata_transaction(from_address, private_key, to_address, metadata)
+    transaction = TransactionBuilder.new
+    transaction.from_address = from_address
+    transaction.private_key = private_key
+    transaction.to_address = to_address
+    transaction.op_return = metadata
+    
+    if transaction.sufficient_funds?
+      transaction.build_and_sign
+      transaction.hex
+    end
+  end
 
   # Provide a hex encoded, signed transaction.
   # Returns the newly created Bitcoin transaction hash (string).
@@ -60,7 +95,8 @@ module Chain
     r["transaction_hash"]
   end
 
-  # Provide a Bitcoin block hash or height.
+  
+  # Provide a Bitcoin block hash (string) or height (integer).
   # Returns basic details for a Bitcoin block (hash).
   def self.get_block(hash_or_height)
     get("/#{API_VERSION}/#{block_chain}/blocks/#{hash_or_height}")

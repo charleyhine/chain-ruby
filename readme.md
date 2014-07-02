@@ -35,6 +35,12 @@ Chain.api_key = 'YOUR-KEY'
 
 The Chain API Documentation is available at [https://chain.com/docs/ruby](https://chain.com/docs/ruby)
 
+
+## Tests
+
+rspec spec/chain_spec.rb
+
+
 ## Publishing a Rubygem
 
 Be sure to bump the version.

@@ -11,4 +11,5 @@ Gem::Specification.new do |s|
   s.license       = "MIT"
   s.files         = ['./lib/chain.rb', 'chain.pem']
   s.require_path  = "lib"
+  s.add_development_dependency "rspec"
 end

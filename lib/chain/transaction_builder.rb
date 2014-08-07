@@ -1,5 +1,6 @@
 require 'digest/sha2'
 require 'bigdecimal'
+require 'bigdecimal/util'
 require 'bitcoin'
 
 SATOSHI_PER_BITCOIN = BigDecimal.new("100000000")
@@ -38,11 +39,13 @@ class TransactionBuilder
   def op_return= val
    @op_return = val.byteslice(0, 40) 
    @amount = BigDecimal.new("0.00")
+   #@transaction_fee = BigDecimal.new("0.0001")
    set_transaction_fee
   end
   
   def set_transaction_fee
     @transaction_fee = @amount >=  BigDecimal.new("0.01") ?  BigDecimal.new("0") :  BigDecimal.new("0.0001")
+    puts 'Fee: ' + @transaction_fee.to_digits
   end
   
   def build_and_sign
@@ -99,7 +102,7 @@ class TransactionBuilder
           scriptSig: nil # Sign it later
         }
         amount = BigDecimal.new(output["value"]) / SATOSHI_PER_BITCOIN
-        #puts "Using #{amount.to_f} from output #{output["output_index"]} of transaction #{output["transaction_hash"][0..5]}..."
+        puts "Using #{amount.to_f} from output #{output["output_index"]} of transaction #{output["transaction_hash"]}..."
         input_total += amount
         break if input_total >= @amount + @transaction_fee
     end
